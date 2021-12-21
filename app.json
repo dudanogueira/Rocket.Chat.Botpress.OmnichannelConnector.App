@@ -5,8 +5,8 @@
     "iconFile": "icon.png",
     "author": {
         "name": "Luis Hlatki",
-        "homepage": "a.",
-        "support": "a"
+        "homepage": "https://github.com/hlatki01/botpress-connector",
+        "support": "https://github.com/hlatki01/botpress-connector"
     },
     "name": "Botpress Connector",
     "nameSlug": "botpress-connector",

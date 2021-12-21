@@ -15,7 +15,6 @@ import { IAppInfo } from '@rocket.chat/apps-engine/definition/metadata';
 import { IUIKitResponse, UIKitLivechatBlockInteractionContext } from '@rocket.chat/apps-engine/definition/uikit';
 
 import { settings } from './config/Settings';
-import { CallbackInputEndpoint } from './endpoints/CallbackInputEndpoint';
 import { IncomingEndpoint } from './endpoints/IncomingEndpoint';
 import { ExecuteLivechatBlockActionHandler } from './handler/ExecuteLivechatBlockActionHandler';
 import { PostMessageSentHandler } from './handler/PostMessageSentHandler';
@@ -26,11 +25,11 @@ export class BotpressConnectorApp extends App implements IPostMessageSent {
 		super(info, logger, accessors);
 	}
 
-		public async executeLivechatBlockActionHandler(context: UIKitLivechatBlockInteractionContext,
-			read: IRead,
-			http: IHttp,
-			persistence: IPersistence,
-			modify: IModify): Promise<IUIKitResponse> {
+	public async executeLivechatBlockActionHandler(context: UIKitLivechatBlockInteractionContext,
+		read: IRead,
+		http: IHttp,
+		persistence: IPersistence,
+		modify: IModify): Promise<IUIKitResponse> {
 		const handler = new ExecuteLivechatBlockActionHandler(this, context, read, http, persistence, modify);
 		return await handler.run();
 	}
@@ -49,8 +48,7 @@ export class BotpressConnectorApp extends App implements IPostMessageSent {
 			visibility: ApiVisibility.PUBLIC,
 			security: ApiSecurity.UNSECURE,
 			endpoints: [
-				new IncomingEndpoint(this),
-				new CallbackInputEndpoint(this),
+				new IncomingEndpoint(this)
 			],
 		});
 		await Promise.all(settings.map((setting) => configuration.settings.provideSetting(setting)));
