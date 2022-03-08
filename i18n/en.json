@@ -1,0 +1,11 @@
+{
+    "botpress_bot_username": "Rocket.Chat bot username",
+    "botpress_server_url": "Botpress server URL",
+    "botpress_service_unavailable_message": "Service unavailable message",
+    "botpress_handover_message": "Handover message",
+    "botpress_close_chat_message": "Closing room message",
+    "botpress_enable_callbacks": "Enable callbacks",
+    "botpress_target_handover_department": "Target department to handover",
+    "botpress_hide_quick_replies": "Hide quick replies",
+    "botpress_bot_id'": "Botpress bot id"
+}

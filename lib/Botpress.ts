@@ -21,7 +21,7 @@ export const sendMessage = async (read: IRead, http: IHttp, sender: string, text
 	const botpressWebhookUrl = `${botpressServerUrl}/api/v1/bots/${BotpressBotId}/converse/${sender}`;
 	const response = await http.post(botpressWebhookUrl, httpRequestContent);
 	if (response.statusCode !== 200) {
-		throw Error(`${ Logs.BOTPRESS_REST_API_COMMUNICATION_ERROR } ${ response.content } ${botpressServerUrl}`); 
+		throw Error(`${ Logs.BOTPRESS_REST_API_COMMUNICATION_ERROR } ${ response.content } ${botpressServerUrl}`);
 	}
 
 	if (!callbackEnabled) {

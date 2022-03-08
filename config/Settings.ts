@@ -50,7 +50,6 @@ export const settings: Array<ISetting> = [
         type: SettingType.STRING,
         packageValue: '',
         i18nLabel: 'botpress_service_unavailable_message',
-        i18nDescription: 'botpress_service_unavailable_message_description',
         required: false,
     },
     {
@@ -59,7 +58,6 @@ export const settings: Array<ISetting> = [
         type: SettingType.STRING,
         packageValue: '',
         i18nLabel: 'botpress_close_chat_message',
-        i18nDescription: 'botpress_close_chat_message_description',
         required: false,
     },
     {
@@ -68,7 +66,6 @@ export const settings: Array<ISetting> = [
         type: SettingType.STRING,
         packageValue: '',
         i18nLabel: 'botpress_handover_message',
-        i18nDescription: 'botpress_handover_message_description',
         required: false,
     },
     {
@@ -77,7 +74,6 @@ export const settings: Array<ISetting> = [
         type: SettingType.STRING,
         packageValue: '',
         i18nLabel: 'botpress_default_handover_department',
-        i18nDescription: 'botpress_default_handover_department_description',
         required: true,
     },
     {
@@ -87,7 +83,6 @@ export const settings: Array<ISetting> = [
         packageValue: false,
         value: false,
         i18nLabel: 'botpress_hide_quick_replies',
-        i18nDescription: 'botpress_hide_quick_replies_description',
         required: true,
     },
 ];
