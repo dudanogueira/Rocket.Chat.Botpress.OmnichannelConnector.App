@@ -45,7 +45,7 @@ export class IncomingEndpoint extends ApiEndpoint {
                 if (targetDepartment && name && targetDepartment === name) {
                     throw new Error(Logs.INVALID_ACTION_USER_ALREADY_IN_DEPARTMENT);
                 }
-                await performHandover(modify, read, sessionId, visitorToken, targetDepartment);
+                await performHandover(this.app, modify, read, sessionId, visitorToken, targetDepartment);
                 break;
             default:
                 throw new Error(Logs.INVALID_ENDPOINT_ACTION);

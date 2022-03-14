@@ -1,39 +1,76 @@
 import { IModify, IRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { IVisitor } from '@rocket.chat/apps-engine/definition/livechat';
-import { BlockElementType, BlockType, IActionsBlock, IButtonElement, TextObjectType } from '@rocket.chat/apps-engine/definition/uikit';
+import { BlockElementType, BlockType, IActionsBlock, IBlock, IButtonElement, TextObjectType } from '@rocket.chat/apps-engine/definition/uikit';
 import { IUser } from '@rocket.chat/apps-engine/definition/users';
 import { AppSetting } from '../config/Settings';
 import { Logs } from '../enum/Logs';
-import { IBotpressMessage, IBotpressQuickReplies, IBotpressQuickReply } from '../enum/Botpress';
+import { IBotpressMessage, IBotpressQuickReplies, IBotpressQuickReply, IBotpressQuickReplyOptions } from '../enum/Botpress';
 import { getAppSettingValue } from './Setting';
 import { uuid } from './Helper';
+import { ActionIds } from '../enum/ActionIds';
+import { IApp } from '@rocket.chat/apps-engine/definition/IApp';
+import { IMessageParam } from '../types/misc';
 
-export const createBotpressMessage = async (rid: string, read: IRead,  modify: IModify, botpressMessage: IBotpressMessage): Promise<any> => {
-    const { text, quickReplies } = botpressMessage.text as IBotpressQuickReplies;
+export const createBotpressMessage = async (
+    app: IApp,
+    rid: string,
+    read: IRead,
+    modify: IModify,
+    botpressMessage: IBotpressMessage
+    ): Promise<any> => {
+    const { text, options } = botpressMessage.message as IBotpressQuickReplies;
 
-    if (text && quickReplies) {
+    if (text && options) {
         // botpressMessage is instanceof IBotpressQuickReplies
-        const elements: Array<IButtonElement> = quickReplies.map((payload: IBotpressQuickReply) => ({
-            type: BlockElementType.BUTTON,
-            text: {
-                type: TextObjectType.PLAINTEXT,
-                text: payload.title,
+        const elements: Array<IButtonElement> = options.map(
+            (payload: IBotpressQuickReplyOptions) => {
+                const buttonElement: IButtonElement = {
+                    type: BlockElementType.BUTTON,
+                    actionId: payload.actionId || uuid(),
+                    text: {
+                        text: payload.text,
+                        type: TextObjectType.PLAINTEXT,
+                    },
+                    value: payload.text,
+                    ...(payload.buttonStyle && {
+                        style: payload.buttonStyle,
+                    }),
+                };
+
+                if (
+                    payload.actionId &&
+                    payload.actionId === ActionIds.PERFORM_HANDOVER
+                ) {
+                    buttonElement.value =
+                        payload.data && payload.data.departmentName
+                            ? payload.data.departmentName
+                            : undefined;
+                }
+
+                return buttonElement;
             },
-            value: payload.value,
-            actionId: uuid(),
-        } as IButtonElement));
+        );
 
-        const actionsBlock: IActionsBlock = { type: BlockType.ACTIONS, elements };
+        const blocks = modify.getCreator().getBlockBuilder();
 
-        await createMessage(rid, read, modify, { text });
-        await createMessage(rid, read, modify, { actionsBlock });
+        blocks.addSectionBlock({
+            text: blocks.newMarkdownTextObject(text),
+        });
+
+        blocks.addActionsBlock({
+            elements,
+        });
+
+        const blockArray = blocks.getBlocks();
+
+        await createMessage(app, rid, read, modify, { blocks: blockArray });
     } else {
         // botpressMessage is instanceof string
-        await createMessage(rid, read, modify, { text: botpressMessage.text });
+        await createMessage(app, rid, read, modify, { text: botpressMessage.message as string });
     }
 };
 
-export const createMessage = async (rid: string, read: IRead,  modify: IModify, message: any ): Promise<any> => {
+export const createMessage = async (app: IApp, rid: string, read: IRead,  modify: IModify, message: IMessageParam ): Promise<any> => {
     if (!message) {
         return;
     }
@@ -54,15 +91,19 @@ export const createMessage = async (rid: string, read: IRead,  modify: IModify, 
     }
 
     const msg = modify.getCreator().startMessage().setRoom(room).setSender(sender);
-    const { text, actionsBlock } = message;
+	const { text, blocks, attachment } = message;
 
     if (text) {
         msg.setText(text);
     }
 
-    if (actionsBlock) {
-        const { elements } = actionsBlock as IActionsBlock;
-        msg.addBlocks(modify.getCreator().getBlockBuilder().addActionsBlock({ elements }));
+    if (attachment) {
+		msg.addAttachment(attachment);
+	}
+
+
+    if (blocks) {
+		msg.addBlocks(blocks);
     }
 
     return new Promise(async (resolve) => {
@@ -106,8 +147,26 @@ export const createLivechatMessage = async (rid: string, read: IRead,  modify: I
     });
 };
 
-export const deleteAllActionBlocks = async (modify: IModify, appUser: IUser, msgId: string): Promise<void> => {
-    const msgBuilder = await modify.getUpdater().message(msgId, appUser);
-    msgBuilder.setEditor(appUser).setBlocks(modify.getCreator().getBlockBuilder().getBlocks());
-    return modify.getUpdater().finish(msgBuilder);
+export const deleteAllActionBlocks = async (
+	modify: IModify,
+	appUser: IUser,
+	msgId: string,
+): Promise<void> => {
+	const msgBuilder = await modify.getUpdater().message(msgId, appUser);
+
+	const withoutActionBlocks: Array<IBlock> = msgBuilder
+		.getBlocks()
+		.filter(
+			(block) =>
+				!(
+					block.type === BlockType.ACTIONS &&
+					(block as IActionsBlock).elements.some(
+						(element) => element.type === BlockElementType.BUTTON,
+					)
+				),
+		);
+
+	msgBuilder.setEditor(appUser).setBlocks(withoutActionBlocks);
+	return modify.getUpdater().finish(msgBuilder);
 };
+

@@ -7,5 +7,6 @@
     "botpress_enable_callbacks": "Habilitar callbacks",
     "botpress_target_handover_department": "Departamento para handover",
     "botpress_hide_quick_replies": "Esconder respostas rápidas",
-    "botpress_bot_id'": "ID do bot no Botpress"
+    "botpress_bot_id": "ID do bot no Botpress",
+    "botpress_default_handover_department": "Departamento para handover padrão"
 }

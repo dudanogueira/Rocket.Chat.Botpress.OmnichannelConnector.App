@@ -6,8 +6,9 @@ import { IBotpressMessage, IBotpressQuickReplies, IBotpressQuickReply } from '..
 import { createHttpRequest } from './Http';
 import { getAppSettingValue } from './Setting';
 import { performHandover } from './Room';
+import { IApp } from '@rocket.chat/apps-engine/definition/IApp';
 
-export const sendMessage = async (read: IRead, http: IHttp, sender: string, text: string): Promise<Array<IBotpressMessage> | null> => {
+export const sendMessage = async (app: IApp, read: IRead, http: IHttp, sender: string, text: string): Promise<Array<IBotpressMessage> | null> => {
 	const botpressServerUrl = await getAppSettingValue(read, AppSetting.BotpressServerUrl);
 	const BotpressBotId = await getAppSettingValue(read, AppSetting.BotpressBotId);
 	if (!botpressServerUrl) { throw new Error(Logs.INVALID_BOTPRESS_SERVER_URL_SETTING); }
@@ -26,39 +27,62 @@ export const sendMessage = async (read: IRead, http: IHttp, sender: string, text
 
 	if (!callbackEnabled) {
 
-		const parsedMessage = parseBotpressResponse(response.data);
+		const parsedMessage = parseBotpressResponse(app,response.data);
 		return parsedMessage;
 	}
 	return null;
 };
 
-export const parseBotpressResponse = (response: any): Array<IBotpressMessage> => {
+export const parseBotpressResponse = (app: IApp, response: any): Array<IBotpressMessage> => {
 	if (!response) { throw new Error(Logs.INVALID_RESPONSE_FROM_BOTPRESS_CONTENT_UNDEFINED); }
 
 	const messages: Array<IBotpressMessage> = [];
 	response.responses.forEach((text) => {
-		messages.push(parseSingleBotpressMessage(text));
+		messages.push(parseSingleBotpressMessage(app, text));
 	});
 
 
 	return messages;
 };
 
-export const parseSingleBotpressMessage = (message: any): IBotpressMessage => {
-	const { text, choices, actionId, data } = message;
+export const parseSingleBotpressMessage = (app: IApp, message: any): IBotpressMessage => {
+
+    app.getLogger().error(`response! ${JSON.stringify(message)}`);
+
+    const { sessionId, text, choices } = message;
+
+
+    app.getLogger().error(`choices! ${JSON.stringify(choices)}`);
+
+    let options: any = []
+
+
 	if (choices) {
-		const quickReplyMessage: IBotpressQuickReplies = {
+
+        choices.forEach(choice => {
+            options.push(
+                {
+                    'text': choice.title,
+                    'actionId': choice.value,
+                    'buttonStyle': choice.buttonStyle,
+                    'data': {
+                        'department': choice.department
+                    }
+                })
+        });
+
+		const quickReplyMessage = {
 			text,
-			quickReplies: choices
+			options: options
 		};
 		return {
-			text: quickReplyMessage,
-			sessionId: message.sessionId
+			message: quickReplyMessage,
+			sessionId: sessionId
 		};
 	} else {
 		return {
-			text: text,
-			sessionId: message.sessionId
+			message: text,
+			sessionId: sessionId
 		};
 	}
 };

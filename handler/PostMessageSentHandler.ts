@@ -48,11 +48,11 @@ export class PostMessageSentHandler {
 
         let response: Array<IBotpressMessage> | null;
         try {
-            response = await sendMessage(this.read, this.http, rid, text);
+            response = await sendMessage(this.app, this.read, this.http, rid, text);
 
         } catch (error) {
             const serviceUnavailable: string = await getAppSettingValue(this.read, AppSetting.BotpressServiceUnavailableMessage);
-            await createMessage(rid, this.read, this.modify, {
+            await createMessage(this.app, rid, this.read, this.modify, {
                 text: serviceUnavailable ? serviceUnavailable : DefaultMessage.DEFAULT_BotpressServiceUnavailableMessage,
             });
 
@@ -61,7 +61,7 @@ export class PostMessageSentHandler {
 
         if (response) {
             for (const message of response) {
-                await createBotpressMessage(rid, this.read, this.modify, message);
+                await createBotpressMessage(this.app, rid, this.read, this.modify, message);
             }
         }
     }
