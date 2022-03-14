@@ -18,7 +18,7 @@ First go ahead and create a Bot User. Login as administrator, then goto ```Setti
 
 Then configure the app to automatically assign a livechat-visitor to this bot. To do so, goto ```Setting > Omnichannel > Routing```. There enable ```Assign new conversations to bot agent``` Setting.
 
-The app needs some configurations to work, so to setup the app Go to ```Setting > Apps > Botpress Connector```. There, fill all the necessary fields in ```SETTINGS``` and click ```AVE```. Note all fields are required.
+The app needs some configurations to work, so to setup the app Go to ```Setting > Apps > Botpress Connector```. There, fill all the necessary fields in ```SETTINGS``` and click ```SAVE```. Note all fields are required.
 
 Some of the fields in ```SETTING``` include
 
