@@ -1,6 +1,9 @@
 # Botpress Connector
 This app will allow you to connect your botpress bot with your Rocket.Chat server.
 
+## Do you need a bot?
+You can reach me on [Open](https://open.rocket.chat/direct/hlatki), I can build one for you :)
+
 ## Installation
 Clone this repository and using the rc-apps cli deploy it:
 ```bash
@@ -32,7 +35,7 @@ Some of the fields in ```SETTING``` include
 * Hide Quick Replies (required) - If enabled, then all quick-replies will hide when a visitor clicks on any one of them
 
 ## Contributing
-Pull requests are welcome, please make this code better! You can reach me on [Open](https://open.rocket.chat/direct/luis.hlatki)
+Pull requests are welcome, please make this code better! You can reach me on [Open](https://open.rocket.chat/direct/hlatki)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
