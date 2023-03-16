@@ -2,7 +2,7 @@
 This app will allow you to connect your botpress bot with your Rocket.Chat server.
 
 ## Do you need a bot?
-You can reach me on [Open](https://open.rocket.chat/direct/hlatki), I can build one for you :)
+You can reach us [Open](https://open.rocket.chat/channel/bots), and find professional help for that.
 
 ## Installation
 Clone this repository and using the rc-apps cli deploy it:
@@ -14,7 +14,7 @@ Use download the latest release and install it manually on your Rocket.Chat serv
 
 ## Configuration
 
-First go ahead and create a Bot User. Login as administrator, then goto ```Setting > Users```. There create a new Bot User. This new user should have these 2 roles.
+First go ahead and create a Bot User. Login as administrator, then go to ```Setting > Users```. There create a new Bot User. This new user should have these 2 roles.
 
 * bot
 * livechat-agent
@@ -39,3 +39,4 @@ Pull requests are welcome, please make this code better! You can reach me on [Op
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+Thanks Luis Hlatki for putting this app together :)
