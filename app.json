@@ -1,17 +1,17 @@
 {
-    "id": "026f9410-9942-4970-9a16-3f44b554b17c",
-    "version": "0.0.1",
+    "id": "c0b58f46-174f-4f91-82f2-69207eba0196",
+    "version": "1.0.0",
     "requiredApiVersion": "^1.25.0",
     "iconFile": "icon.png",
     "author": {
-        "name": "Luis Hlatki",
-        "homepage": "https://github.com/hlatki01/botpress-connector",
-        "support": "https://github.com/hlatki01/botpress-connector"
+        "name": "Duda Nogueira",
+        "homepage": "https://github.com/dudanogueira/Rocket.Chat.Botpress.OmnichannelConnector.App",
+        "support": "https://github.com/dudanogueira/Rocket.Chat.Botpress.OmnichannelConnector.App"
     },
-    "name": "Botpress Connector",
-    "nameSlug": "botpress-connector",
-    "classFile": "BotpressConnectorApp.ts",
-    "description": "Botpress Connector will connect your botpress bot with your Rocket.chat server!",
+    "name": "Botpress Omnichannel Connector",
+    "nameSlug": "botpress-omnichannel-connector",
+    "classFile": "BotpressOmnichannelConnectorApp.ts",
+    "description": "Botpress Omnichannel Connector will connect your botpress bot with your Rocket.chat server!",
     "implements": [
         "IPostMessageSent"
     ]
