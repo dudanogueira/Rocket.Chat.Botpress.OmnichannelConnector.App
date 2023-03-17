@@ -1,6 +1,9 @@
 # Botpress Omnichannel Connector
 This app will allow you to connect your botpress bot with your Rocket.Chat server.
 
+**IMPORTANT!**
+A `Super Botpress Connector` is on planning. All efforts should be directed to this upcoming initiative, and not here.
+
 ## Do you need a bot?
 You can reach us [Open](https://open.rocket.chat/channel/bots), and find professional help for that.
 
