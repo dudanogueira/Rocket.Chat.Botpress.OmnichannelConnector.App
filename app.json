@@ -1,6 +1,6 @@
 {
     "id": "c0b58f46-174f-4f91-82f2-69207eba0196",
-    "version": "1.0.0",
+    "version": "0.0.9",
     "requiredApiVersion": "^1.25.0",
     "iconFile": "icon.png",
     "author": {
