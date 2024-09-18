@@ -18,8 +18,13 @@ export class ExecuteLivechatBlockActionHandler {
 
     public async run(): Promise<IUIKitResponse> {
         try {
-            const interactionData = this.context.getInteractionData();
-
+            // workaround for possible rocket.chat bug in 6.X version
+            const interactionData_raw = this.context.getInteractionData();
+            if (interactionData_raw.hasOwnProperty("interactionData")){
+                var interactionData = interactionData_raw["interactionData"]
+            }else{
+                interactionData = interactionData_raw
+            }
             const { visitor, room, container: { id, type }, value } = interactionData;
 
             if (type !== UIKitIncomingInteractionContainerType.MESSAGE) {
