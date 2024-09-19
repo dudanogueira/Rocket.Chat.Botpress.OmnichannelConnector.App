@@ -66,7 +66,7 @@ export const createBotpressMessage = async (
         await createMessage(app, rid, read, modify, { blocks: blockArray });
     } else {
         // botpressMessage is instanceof string
-        await createMessage(app, rid, read, modify, { text: botpressMessage.message as string });
+        await createMessage(app, rid, read, modify, { text: botpressMessage.message as string, attachment: botpressMessage.attachment });
     }
 };
 
@@ -105,7 +105,7 @@ export const createMessage = async (app: IApp, rid: string, read: IRead,  modify
     if (blocks) {
 		msg.addBlocks(blocks);
     }
-
+    console.log("THIS IS A TEST", msg)
     return new Promise(async (resolve) => {
         modify.getCreator().finish(msg)
         .then((result) => resolve(result))

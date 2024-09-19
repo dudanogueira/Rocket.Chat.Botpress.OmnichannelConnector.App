@@ -49,7 +49,7 @@ export const parseSingleBotpressMessage = (app: IApp, message: any): IBotpressMe
 
     app.getLogger().error(`response! ${JSON.stringify(message)}`);
 
-    const { sessionId, text, choices } = message;
+    const { type, sessionId, text, choices, image, title } = message;
 
 
     app.getLogger().error(`choices! ${JSON.stringify(choices)}`);
@@ -79,6 +79,15 @@ export const parseSingleBotpressMessage = (app: IApp, message: any): IBotpressMe
 			message: quickReplyMessage,
 			sessionId: sessionId
 		};
+	} else if (type === 'image') {
+		return {
+			message: title || '',
+			sessionId: sessionId,
+			attachment: {
+				imageUrl: image
+			}
+		};		
+		
 	} else {
 		return {
 			message: text,
